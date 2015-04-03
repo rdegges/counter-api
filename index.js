@@ -5,7 +5,7 @@ var auth = require('basic-auth');
 var bodyParser = require('body-parser');
 var express = require('express');
 var memjs = require('memjs');
-var sequelize = require('sequelize');
+var Sequelize = require('sequelize');
 
 /*
  * Settings.
@@ -20,7 +20,7 @@ var PORT = process.env.PORT || 3000;
  */
 var app = express();
 var cache = memjs.Client.create();
-var sequelize = new sequelize.Sequelize(DATABASE_URL);
+var sequelize = new Sequelize(DATABASE_URL);
 
 /*
  * Middlewares.
