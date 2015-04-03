@@ -1,6 +1,7 @@
 'use strict';
 
 var auth = require('basic-auth');
+var bodyParser = require('body-parser');
 var express = require('express');
 
 /*
@@ -11,6 +12,11 @@ var AUTH_PASSWORD = process.env.AUTH_PASSWORD;
 var PORT = process.env.PORT || 3000;
 
 var app = express();
+
+/*
+ * Middlewares.
+ */
+app.use(bodyParser.text({ limit: '100mb' }));
 
 /*
  * Routes.
