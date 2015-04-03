@@ -16,7 +16,7 @@ var app = express();
 /*
  * Middlewares.
  */
-app.use(bodyParser.text({ limit: '100mb' }));
+app.use(bodyParser.raw({ limit: '100mb', type: 'application/logplex-1' }));
 
 /*
  * Routes.
@@ -30,7 +30,7 @@ app.post('/logs', function(req, res) {
     return res.status(401).json({ error: 'Invalid credentials specified.' });
   }
 
-  console.log(req.body);
+  console.log(req.body.toString());
   res.json({ hi: 'there' });
 });
 
