@@ -50,8 +50,6 @@ app.post('/logs', function(req, res) {
 
   var body = req.body.toString();
 
-  console.log(drainToken);
-
   if (messageCount > 1) {
     var messages = body.split('\n');
 
