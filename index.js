@@ -23,6 +23,10 @@ var cache = memjs.Client.create();
 var sequelize = new Sequelize(DATABASE_URL);
 
 /*
+ * Models.
+ */
+
+/*
  * Middlewares.
  */
 app.use(bodyParser.raw({ limit: '100mb', type: 'application/logplex-1' }));
