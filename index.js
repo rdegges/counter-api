@@ -40,7 +40,7 @@ app.post('/logs', function(req, res) {
 
     var messages = req.body.toString().split('\n');
     messages.map(function(message) {
-      logParser.parse(message, function(parsed) {
+      logParser.parse(message.toString('utf8', 0), function(parsed) {
         console.log(parsed);
       });
     });
