@@ -30,6 +30,8 @@ app.post('/logs', function(req, res) {
     return res.status(401).json({ error: 'Invalid credentials specified.' });
   }
 
+  console.log('debug:', req.headers);
+
   console.log(req.body.toString());
   res.json({ hi: 'there' });
 });
