@@ -5,16 +5,22 @@ var auth = require('basic-auth');
 var bodyParser = require('body-parser');
 var express = require('express');
 var memjs = require('memjs');
+var sequelize = require('sequelize');
+
+/*
+ * Settings.
+ */
+var AUTH_USERNAME = process.env.AUTH_USERNAME;
+var AUTH_PASSWORD = process.env.AUTH_PASSWORD;
+var DATABASE_URL = process.env.DATABASE_URL;
+var PORT = process.env.PORT || 3000;
 
 /*
  * Globals.
  */
-var AUTH_USERNAME = process.env.AUTH_USERNAME;
-var AUTH_PASSWORD = process.env.AUTH_PASSWORD;
-var PORT = process.env.PORT || 3000;
-
 var app = express();
 var cache = memjs.Client.create();
+var sequelize = new sequelize.Sequelize(DATABASE_URL);
 
 /*
  * Middlewares.
