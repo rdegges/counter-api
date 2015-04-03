@@ -1,5 +1,6 @@
 'use strict';
 
+var async = require('async');
 var auth = require('basic-auth');
 var bodyParser = require('body-parser');
 var express = require('express');
@@ -39,26 +40,21 @@ app.post('/logs', function(req, res) {
     return res.status(401).json({ error: 'Invalid credentials specified.' });
   }
 
-  var messageCount = req.headers['logplex-msg-count'];
   var drainToken = req.headers['logplex-drain-token'];
-
   var body = req.body.toString();
+  var messages = body.split('\n');
+  var totalRequests = 0;
 
-  if (messageCount > 1) {
-    var messages = body.split('\n');
-
-    messages.map(function(message) {
-      if (isValidMessage(message)) {
-        cache.increment(drainToken, 1);
-        //console.log('Found valid message:', message);
-      }
-    });
-  } else {
-    if (isValidMessage(body)) {
-      //console.log('Found valid message:', body);
-      cache.increment(drainToken, 1);
+  async.each(messages, function(message, cb) {
+    if (isValidMessage(message)) {
+      totalRequests++;
     }
-  }
+    cb();
+  }, function(err) {
+    if (err) throw err;
+    cache.increment(drainToken, totalRequests);
+  });
+
   //console.log('frameId:', frameId);
   //console.log('drainToken:', drainToken);
 
