@@ -3,6 +3,7 @@
 var auth = require('basic-auth');
 var bodyParser = require('body-parser');
 var express = require('express');
+var memjs = require('memjs');
 
 /*
  * Globals.
@@ -12,6 +13,7 @@ var AUTH_PASSWORD = process.env.AUTH_PASSWORD;
 var PORT = process.env.PORT || 3000;
 
 var app = express();
+var cache = memjs.Client.create();
 
 /*
  * Middlewares.
@@ -38,7 +40,6 @@ app.post('/logs', function(req, res) {
   }
 
   var messageCount = req.headers['logplex-msg-count'];
-  var frameId = req.headers['logplex-frame-id'];
   var drainToken = req.headers['logplex-drain-token'];
 
   var body = req.body.toString();
@@ -48,12 +49,14 @@ app.post('/logs', function(req, res) {
 
     messages.map(function(message) {
       if (isValidMessage(message)) {
+        cache.increment(drainToken, 1);
         console.log('Found valid message:', message);
       }
     });
   } else {
     if (isValidMessage(body)) {
       console.log('Found valid message:', body);
+      cache.increment(drainToken, 1);
     }
   }
   //console.log('frameId:', frameId);
