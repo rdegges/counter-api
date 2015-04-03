@@ -36,11 +36,11 @@ app.post('/logs', function(req, res) {
 
   if (messageCount > 1) {
     console.log('messageCount:', messageCount);
+    console.log(req.body.toString());
   }
   //console.log('frameId:', frameId);
   //console.log('drainToken:', drainToken);
 
-  console.log(req.body.toString());
   res.json({ hi: 'there' });
 });
 
