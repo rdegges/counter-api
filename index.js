@@ -15,12 +15,6 @@ var PORT = process.env.PORT || 3000;
 var app = express();
 var cache = memjs.Client.create();
 
-cache.get('d.74ac7d4c-02b5-4729-8326-4b7dfcffc9b5', function(err, value, key) {
-  if (err) throw err;
-  console.log('key:', key.toString());
-  console.log('value:', value.toString());
-});
-
 /*
  * Middlewares.
  */
@@ -70,6 +64,17 @@ app.post('/logs', function(req, res) {
 
   res.json({ hi: 'there' });
 });
+
+/*
+ * Cron-style tasks.
+ */
+setInterval(function() {
+  cache.get('d.74ac7d4c-02b5-4729-8326-4b7dfcffc9b5', function(err, value, key) {
+    if (err) throw err;
+    console.log('key:', key.toString());
+    console.log('value:', value.toString());
+  });
+}, 1000);
 
 /*
  * Server.
