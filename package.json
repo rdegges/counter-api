@@ -32,7 +32,6 @@
     "basic-auth": "^1.0.0",
     "body-parser": "^1.12.2",
     "express": "^4.12.3",
-    "glossy": "^0.1.7",
     "memjs": "^0.8.5"
   }
 }
