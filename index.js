@@ -34,9 +34,11 @@ app.post('/logs', function(req, res) {
   var frameId = req.headers['logplex-frame-id'];
   var drainToken = req.headers['logplex-drain-token'];
 
-  console.log('messageCount:', messageCount);
-  console.log('frameId:', frameId);
-  console.log('drainToken:', drainToken);
+  if (messageCount > 1) {
+    console.log('messageCount:', messageCount);
+  }
+  //console.log('frameId:', frameId);
+  //console.log('drainToken:', drainToken);
 
   console.log(req.body.toString());
   res.json({ hi: 'there' });
