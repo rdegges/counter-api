@@ -30,7 +30,13 @@ app.post('/logs', function(req, res) {
     return res.status(401).json({ error: 'Invalid credentials specified.' });
   }
 
-  console.log('debug:', req.headers);
+  var messageCount = req.headers['Logplex-Msg-Count'];
+  var frameId = req.headers['Logplex-Frame-Id'];
+  var drainToken = req.headers['Logplex-Drain-Token'];
+
+  console.log('messageCount:', messageCount);
+  console.log('frameId:', frameId);
+  console.log('drainToken:', drainToken);
 
   console.log(req.body.toString());
   res.json({ hi: 'there' });
