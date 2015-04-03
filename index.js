@@ -3,7 +3,6 @@
 var auth = require('basic-auth');
 var bodyParser = require('body-parser');
 var express = require('express');
-var logParser = require('glossy').Parse;
 
 /*
  * Globals.
@@ -18,6 +17,13 @@ var app = express();
  * Middlewares.
  */
 app.use(bodyParser.raw({ limit: '100mb', type: 'application/logplex-1' }));
+
+/*
+ * Helpers.
+ */
+function isValidMessage(message) {
+  return (message.indexOf('host heroku router') !== -1);
+}
 
 /*
  * Routes.
@@ -36,15 +42,19 @@ app.post('/logs', function(req, res) {
   var drainToken = req.headers['logplex-drain-token'];
 
   if (messageCount > 1) {
-    console.log('messageCount:', messageCount);
-
-    var messages = req.body.toString().split('\n');
-    messages.map(function(message) {
-      logParser.parse(message.toString('utf8', 0), function(parsed) {
-        console.log(parsed);
-      });
-    });
-    //console.log(req.body.toString());
+//    var messages = req.body.toString().split('\n');
+//
+//    messages.map(function(message) {
+//      logParser.parse(message.toString('utf8', 0), function(parsed) {
+//        console.log(parsed);
+//      });
+//    });
+//    //console.log(req.body.toString());
+  // We've got a single message, so don't bother doing fancy stuff.
+  } else {
+    if (isValidMessage(req.body.toString())) {
+      console.log('Found valid message:', req.body.toString());
+    }
   }
   //console.log('frameId:', frameId);
   //console.log('drainToken:', drainToken);
