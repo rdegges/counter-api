@@ -38,8 +38,11 @@ app.post('/logs', function(req, res) {
   if (messageCount > 1) {
     console.log('messageCount:', messageCount);
 
-    logParser.parse(req.body.toString(), function(parsed) {
-      console.log(parsed);
+    var messages = req.body.toString().split('\n');
+    messages.map(function(message) {
+      logParser.parse(message, function(parsed) {
+        console.log(parsed);
+      });
     });
     //console.log(req.body.toString());
   }
