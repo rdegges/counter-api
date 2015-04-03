@@ -15,6 +15,12 @@ var PORT = process.env.PORT || 3000;
 var app = express();
 var cache = memjs.Client.create();
 
+cache.get('d.74ac7d4c-02b5-4729-8326-4b7dfcffc9b5', function(err, value, key) {
+  if (err) throw err;
+  console.log('key:', key);
+  console.log('value:', value);
+});
+
 /*
  * Middlewares.
  */
