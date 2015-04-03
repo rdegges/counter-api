@@ -3,6 +3,7 @@
 var auth = require('basic-auth');
 var bodyParser = require('body-parser');
 var express = require('express');
+var logParser = require('glossy').Parse;
 
 /*
  * Globals.
@@ -36,7 +37,11 @@ app.post('/logs', function(req, res) {
 
   if (messageCount > 1) {
     console.log('messageCount:', messageCount);
-    console.log(req.body.toString());
+
+    logParser.parse(req.body.toString(), function(parsed) {
+      console.log(parsed.host + ' - ' + parsed.message);
+    });
+    //console.log(req.body.toString());
   }
   //console.log('frameId:', frameId);
   //console.log('drainToken:', drainToken);
