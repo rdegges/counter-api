@@ -1,11 +1,34 @@
 'use strict';
 
+var auth = require('basic-auth');
 var express = require('express');
+
+/*
+ * Globals.
+ */
+var AUTH_USERNAME = process.env.AUTH_USERNAME;
+var AUTH_PASSWORD = process.env.AUTH_PASSWORD;
+var PORT = process.env.PORT || 3000;
 
 var app = express();
 
-app.get('/', function(req, res) {
+/*
+ * Routes.
+ */
+app.post('/logs', function(req, res) {
+  var user = auth(req);
+
+  if (!user) {
+    return res.status(401).json({ error: 'No credentials specified.' });
+  } else if (!(user.name === AUTH_USERNAME && user.pass === AUTH_PASSWORD)) {
+    return res.status(401).json({ error: 'Invalid credentials specified.' });
+  }
+
+  console.log(req.body);
   res.json({ hi: 'there' });
 });
 
-app.listen(process.env.PORT || 3000);
+/*
+ * Server.
+ */
+app.listen(PORT);
