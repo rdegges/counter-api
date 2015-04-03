@@ -41,19 +41,19 @@ app.post('/logs', function(req, res) {
   var frameId = req.headers['logplex-frame-id'];
   var drainToken = req.headers['logplex-drain-token'];
 
+  var body = req.body.toString();
+
   if (messageCount > 1) {
-//    var messages = req.body.toString().split('\n');
-//
-//    messages.map(function(message) {
-//      logParser.parse(message.toString('utf8', 0), function(parsed) {
-//        console.log(parsed);
-//      });
-//    });
-//    //console.log(req.body.toString());
-  // We've got a single message, so don't bother doing fancy stuff.
+    var messages = body.split('\n');
+
+    messages.map(function(message) {
+      if (isValidMessage(message)) {
+        console.log('Found valid message:', message);
+      }
+    });
   } else {
-    if (isValidMessage(req.body.toString())) {
-      console.log('Found valid message:', req.body.toString());
+    if (isValidMessage(body)) {
+      console.log('Found valid message:', body);
     }
   }
   //console.log('frameId:', frameId);
