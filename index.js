@@ -58,6 +58,7 @@ app.post('/logs', function(req, res) {
     cb();
   }, function(err) {
     if (err) throw err;
+    console.log('Incrementing cache by:', totalRequests);
     cache.increment(drainToken, totalRequests);
   });
 
