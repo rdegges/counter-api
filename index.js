@@ -74,7 +74,7 @@ setInterval(function() {
     console.log('key:', key.toString());
     console.log('value:', value.toString());
   });
-}, 1000);
+}, 60000);
 
 /*
  * Server.
