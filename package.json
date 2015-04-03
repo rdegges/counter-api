@@ -28,6 +28,7 @@
   },
   "homepage": "https://github.com/rdegges/counter-api",
   "dependencies": {
+    "async": "^0.9.0",
     "basic-auth": "^1.0.0",
     "body-parser": "^1.12.2",
     "express": "^4.12.3",
