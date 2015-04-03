@@ -44,18 +44,20 @@ app.post('/logs', function(req, res) {
 
   var body = req.body.toString();
 
+  console.log(drainToken);
+
   if (messageCount > 1) {
     var messages = body.split('\n');
 
     messages.map(function(message) {
       if (isValidMessage(message)) {
         cache.increment(drainToken, 1);
-        console.log('Found valid message:', message);
+        //console.log('Found valid message:', message);
       }
     });
   } else {
     if (isValidMessage(body)) {
-      console.log('Found valid message:', body);
+      //console.log('Found valid message:', body);
       cache.increment(drainToken, 1);
     }
   }
