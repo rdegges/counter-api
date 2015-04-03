@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/rdegges/counter-api/issues"
   },
-  "homepage": "https://github.com/rdegges/counter-api"
+  "homepage": "https://github.com/rdegges/counter-api",
+  "dependencies": {
+    "express": "^4.12.3"
+  }
 }
