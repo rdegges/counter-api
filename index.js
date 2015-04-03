@@ -39,7 +39,7 @@ app.post('/logs', function(req, res) {
     console.log('messageCount:', messageCount);
 
     logParser.parse(req.body.toString(), function(parsed) {
-      console.log(parsed.app + ' - ' + parsed.status);
+      console.log(parsed);
     });
     //console.log(req.body.toString());
   }
