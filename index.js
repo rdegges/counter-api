@@ -5,6 +5,7 @@ var auth = require('basic-auth');
 var bodyParser = require('body-parser');
 var express = require('express');
 var memjs = require('memjs');
+var uuid = require('node-uuid');
 var Sequelize = require('sequelize');
 
 /*
@@ -22,11 +23,74 @@ var PORT = process.env.PORT || 3000;
  */
 var app = express();
 var cache = memjs.Client.create();
-var sequelize = new Sequelize(DATABASE_URL);
+var sequelize = new Sequelize(DATABASE_URL, {
+  dialect: 'postgres',
+  dialectOptions: {
+    ssl: true
+  }
+});
 
 /*
  * Models.
  */
+var User = sequelize.define('users', {
+  id: {
+    defaultValue: function() {
+      return uuid.v4()
+    },
+    field: 'id',
+    primaryKey: true,
+    type: Sequelize.TEXT
+  },
+  herokuPlan: {
+    allowNull: false,
+    field: 'heroku_plan',
+    type: Sequelize.TEXT
+  },
+  herokuId: {
+    allowNull: false,
+    field: 'heroku_id',
+    type: Sequelize.TEXT
+  },
+  herokuCallbackUrl: {
+    allowNull: false,
+    field: 'heroku_callback_url',
+    type: Sequelize.TEXT
+  },
+  herokuLogplexToken: {
+    allowNull: true,
+    field: 'heroku_logplex_token',
+    type: Sequelize.TEXT
+  },
+  herokuRegion: {
+    allowNull: false,
+    field: 'heroku_region',
+    type: Sequelize.TEXT
+  },
+  herokuOptions: {
+    allowNull: true,
+    field: 'heroku_options',
+    type: Sequelize.JSON
+  }
+}, { freezeTableName: true });
+
+/*
+ * Attempt to create the table if it doesn't already exist.
+ */
+User.sync({ force: true });
+
+setTimeout(function() {
+
+  for (var i = 0; i < 10; i++) {
+    User.create({
+      herokuPlan: 'test',
+      herokuId: 'hi@heroku.com',
+      herokuCallbackUrl: 'woot',
+      herokuLogplexToken: 'hi',
+      herokuRegion: 'us'
+    });
+  }
+}, 5000);
 
 /*
  * Middlewares.
@@ -121,13 +185,13 @@ app.put('/heroku/resources/:id', function(req, res) {
 /*
  * Cron-style tasks.
  */
-setInterval(function() {
-  cache.get('d.74ac7d4c-02b5-4729-8326-4b7dfcffc9b5', function(err, value, key) {
-    if (err) throw err;
-    console.log('key:', key.toString());
-    console.log('value:', value.toString());
-  });
-}, 60000);
+//setInterval(function() {
+//  cache.get('d.74ac7d4c-02b5-4729-8326-4b7dfcffc9b5', function(err, value, key) {
+//    if (err) throw err;
+//    console.log('key:', key.toString());
+//    console.log('value:', value.toString());
+//  });
+//}, 60000);
 
 /*
  * Server.
